@@ -1,0 +1,11 @@
+---
+applications:
+- name: onrr-cms-dev
+  memory: 256M
+  disk_quota: 512M
+  path: .
+  buildpacks: 
+  - php_buildpack
+  services:
+  - onrr-dev-mysql
+  - onrr-dev-s3
