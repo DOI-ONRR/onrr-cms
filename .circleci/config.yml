@@ -7,21 +7,21 @@ jobs:
       - run: 
           name: download and install wordpress
           command: |
-          pwd && ls -l
-          curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
-          sudo dpkg -i cf-cli_amd64.deb
-          # Set $CF_USERNAME and $CF_PASSWORD in CircleCI settings.
-          # $CF_ORG, $CF_SPACE, and $APP_NAME can also be set in CircleCI settings or hardcoded here.
-          cf api https://api.fr.cloud.gov
-          cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
-          cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
-          cf push onrr-cms-dev --no-start
+            pwd && ls -l
+            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+            sudo dpkg -i cf-cli_amd64.deb
+            # Set $CF_USERNAME and $CF_PASSWORD in CircleCI settings.
+            # $CF_ORG, $CF_SPACE, and $APP_NAME can also be set in CircleCI settings or hardcoded here.
+            cf api https://api.fr.cloud.gov
+            cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
+            cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
+            cf push onrr-cms-dev --no-start
       - run: 
           name: setup
           command: |
-          curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
-          sudo dpkg -i cf-cli_amd64.deb
-          bash ./setup.sh
+            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+            sudo dpkg -i cf-cli_amd64.deb
+            bash ./setup.sh
 
   deploy:
     steps:
@@ -29,15 +29,15 @@ jobs:
       - run:
           name: run wordpress
           command: |
-          pwd && ls -l
-          curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
-          sudo dpkg -i cf-cli_amd64.deb
-          # Set $CF_USERNAME and $CF_PASSWORD in CircleCI settings.
-          # $CF_ORG, $CF_SPACE, and $APP_NAME can also be set in CircleCI settings or hardcoded here.
-          cf api https://api.fr.cloud.gov
-          cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
-          cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
-          cf push onrr-cms-dev -f ./manifest.yml
+            pwd && ls -l
+            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+            sudo dpkg -i cf-cli_amd64.deb
+            # Set $CF_USERNAME and $CF_PASSWORD in CircleCI settings.
+            # $CF_ORG, $CF_SPACE, and $APP_NAME can also be set in CircleCI settings or hardcoded here.
+            cf api https://api.fr.cloud.gov
+            cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
+            cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
+            cf push onrr-cms-dev -f ./manifest.yml
 workflows:
   build:
     jobs:
