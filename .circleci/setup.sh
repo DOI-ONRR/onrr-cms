@@ -1,7 +1,4 @@
 #!/bin/bash
-cf api https://api.fr.cloud.gov
-cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
-cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
 APP_NAME=$1
 
 cf set-env $APP_NAME AUTH_KEY $AUTH_KEY
