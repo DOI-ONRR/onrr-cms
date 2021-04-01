@@ -32,7 +32,7 @@ jobs:
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             bash .circleci/setup.sh onrr-cms-dev
       - run:
-          name: Deploy wordpress
+          name: Install wordpress
           command: |
             pwd && ls -l
             curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
@@ -45,19 +45,17 @@ jobs:
             cf push onrr-cms-dev -f ./manifest.yml
       - run: 
           name: Download and install WP-CLI
-          command: curl -O 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
+          command: |
+            curl -O 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
       - run: 
-          name: Make WP-CLI executable
-          command: chmod +x wp-cli.phar
-      - run:
-          name: Set site url
-          command: ./wp-cli.phar option update blogname "$DEV_ADMIN_SITE_URL"
-      - run: 
-          name: Update admin username and password 
-          command: ./wp-cli.phar user update admin --user_pass="$DEV_ADMIN_PASSWORD" --skip-packages
-      - run:
-          name: Update amdin email
-          command: ./wp-cli.phar option update admin_email "$DEV_ADMIN_EMAIL"
+          name: WP-CLI setup site andadmin user 
+          command: |
+            chmod +x wp-cli.phar
+            sudo mv wp-cli.phar /usr/local/bin/wp
+            ./wp-cli.phar option update blogname "$DEV_ADMIN_SITE_URL"
+            ./wp-cli.phar user update admin --user_pass="$DEV_ADMIN_PASSWORD" --skip-packages
+            ./wp-cli.phar option update admin_email "$DEV_ADMIN_EMAIL"
+
 
 workflows:
   build:
