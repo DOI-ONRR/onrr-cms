@@ -1,0 +1,45 @@
+{
+  "site_info": {
+      "url": "https://CHANGEME.app.cloud.gov",
+      "title": "SITE_TITLE",
+      "admin_user": "admin",
+      "admin_password": "admin",
+      "admin_email": "my.email.example.com"
+  },
+  "plugins": [
+    {
+      "url": "https://github.com/humanmade/S3-Uploads/releases/download/2.3.0/manual-install.zip"
+    },
+    {
+      "url": "https://github.com/WebDevStudios/custom-post-type-ui/archive/refs/tags/1.8.2.zip"
+    },
+    {
+      "url": "https://downloads.wordpress.org/plugin/wp-api-menus.1.3.2.zip"
+    },
+    {
+      "name": "akismet",
+      "version": "4.0"
+    },
+    {
+      "name": "classic-editor",
+      "verion": "1.6"
+    },
+    {
+      "name": "advanced-custom-fields",
+      "verion": "5.9.5"
+    },
+    {
+      "name": "acf-to-rest-api",
+      "version": "3.3.2"
+    },
+    {
+      "name": "filester",
+      "version": "1.7.2"
+    }
+  ],
+  "themes": [
+    {
+      "url": "https://downloads.wordpress.org/plugin/material-admin-theme.1.3.4.zip"
+    }
+  ]
+}

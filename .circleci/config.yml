@@ -8,6 +8,15 @@ jobs:
     steps:
       - checkout
       - run: 
+          name: "Download and install wp cli"
+          command: |
+          # Use cURL to fetch WP-CLI
+          - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+      - run:
+          name: "Make WP-CLI executable"
+          # Make sure WP-CLI is executable
+          - chmod +x wp-cli.phar
+      - run: 
           name: Download wp
           command: |
             pwd && ls -l
