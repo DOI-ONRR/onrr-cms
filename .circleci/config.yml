@@ -20,7 +20,7 @@ jobs:
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf push onrr-cms-dev --no-start
       - run: 
-          name: Setup wp configuration
+          name: Setup WP configuration
           command: |
             curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
             sudo dpkg -i cf-cli_amd64.deb
@@ -32,7 +32,7 @@ jobs:
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             bash .circleci/setup.sh onrr-cms-dev
       - run:
-          name: Install wordpress
+          name: Install WP
           command: |
             pwd && ls -l
             curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
@@ -44,7 +44,7 @@ jobs:
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf push onrr-cms-dev -f ./manifest.yml
       - run: 
-          name: Flush wp permalinks
+          name: Flush permalinks
           command: |
             pwd && ls -l
             curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
@@ -56,7 +56,7 @@ jobs:
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar rewrite flush format '/%postname%/' --path='/home/vcap/app/htdocs'"
       - run: 
-          name: Update admin password 
+          name: Update admin user
           command: |
             pwd && ls -l
             curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
@@ -67,17 +67,6 @@ jobs:
             cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar user update admin --user_pass='$DEV_ADMIN_PASSWORD' --skip-packages --path='/home/vcap/app/htdocs'"
-      - run:
-          name: Update admin email
-          command: |
-            pwd && ls -l
-            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
-            sudo dpkg -i cf-cli_amd64.deb
-            # Set $CF_USERNAME and $CF_PASSWORD in CircleCI settings.
-            # $CF_ORG, $CF_SPACE, and $APP_NAME can also be set in CircleCI settings or hardcoded here.
-            cf api https://api.fr.cloud.gov
-            cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
-            cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar user update admin --user_email='$DEV_ADMIN_EMAIL' --skip-packages --path='/home/vcap/app/htdocs'"
 
 
