@@ -72,6 +72,7 @@ def install_wordpress(ctx, builder, wordpressDir):
     os.environ['LD_LIBRARY_PATH'] = os.path.join(ctx['BUILD_DIR'], 'php', 'lib')
 
     print 'Installing WordPress'
+    print('phpcmd, phpconfig, wordpressDir ------> ', phpcmd, phpconfig, wordpressDir)
     setupjson = load_json(wordpressDir)
     if setupjson.has_key('wordpress_version'):
         args = [phpcmd, '-c', phpconfig, 'wp-cli.phar', 'core', 'download', '--version=%s' % setupjson['wordpress_version']]
