@@ -66,8 +66,27 @@ jobs:
             cf api https://api.fr.cloud.gov
             cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
-            cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar user update admin --user_pass='$DEV_ADMIN_PASSWORD' --skip-packages --path='/home/vcap/app/htdocs'"
-            cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar user update admin --user_email='$DEV_ADMIN_EMAIL' --skip-packages --path='/home/vcap/app/htdocs'"
+            cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar user update admin --user_pass='$DEV_ADMIN_PASSWORD' --user_email='$DEV_ADMIN_EMAIL' --skip-packages --path='/home/vcap/app/htdocs'"
+      - run:
+          name: Install mysql client
+          command: sudo apt-get install -y mysql-client
+      - run:
+          name: Install cf service connect plugin
+          command: |
+            curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+            sudo dpkg -i cf-cli_amd64.deb 
+            cf api https://api.fr.cloud.gov
+            echo "$DEV_CF_USERNAME"
+            cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
+            cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
+            cf install-plugin -f https://github.com/cloud-gov/cf-service-connect/releases/download/1.1.0/cf-service-connect-linux-amd64
+            cf connect-to-service -no-client onrr-cms-dev onrr-dev-mysql
+      - run:
+          name: Backup database
+          command: mysqldump mysql://mysql:"$DEV_MYSQL_PASSWORD"@localhost:"$DEV_MYSQL_PORT"/mysql -f /tmp/database_backup.sql || echo $? 
+      - store_artifacts:
+          path: /tmp/database_backup.sql
+          destination: database_backup.sql
 
 
 workflows:
