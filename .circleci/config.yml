@@ -68,8 +68,11 @@ jobs:
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf run-task onrr-cms-dev "php/bin/php htdocs/wp-cli.phar user update admin --user_pass='$DEV_ADMIN_PASSWORD' --user_email='$DEV_ADMIN_EMAIL' --skip-packages --path='/home/vcap/app/htdocs'"
       - run:
+          name: Update OS
+          command: sudo apt-get update
+      - run:
           name: Install mysql client
-          command: sudo apt-get install --fix-missing default-mysql-client
+          command: sudo apt-get install --fix-missing mysql-client
       - run:
           name: Install cf service connect plugin
           command: |
