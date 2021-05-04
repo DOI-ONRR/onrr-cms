@@ -43,6 +43,11 @@ jobs:
             cf auth "$DEV_CF_USERNAME" "$DEV_CF_PASSWORD"
             cf target -o "$DEV_CF_ORG" -s "$DEV_CF_SPACE"
             cf push onrr-cms-dev -f ./manifest.yml
+      - run:
+          name: Download and install Node Version Manager (nvm)
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+            nvm install --lts
       - run: 
           name: Flush permalinks
           command: |
